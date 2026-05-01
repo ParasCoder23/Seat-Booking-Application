@@ -39,23 +39,24 @@ const SeatGrid = () => {
   // const { user, isEmployee } = useAuth();
   const { isEmployee } = useAuth();
 
-  useEffect(() => {
-    loadSeats(true); // Initial load
+  // useEffect(() => {
+  //   loadSeats(true); // Initial load
 
-    // Auto-refresh seats every 5 seconds to show real-time updates
-    // This ensures locked seats immediately show as yellow and booked seats as red
-    // BUT: Don't refresh if booking modal is open (to prevent interference)
-    const interval = setInterval(() => {
-      // Only refresh if modal is NOT open
-      if (!showBookingModal) {
-        loadSeats(false); // Refresh without showing loading state
-      }
-    }, 5000);
+  //   // Auto-refresh seats every 5 seconds to show real-time updates
+  //   // This ensures locked seats immediately show as yellow and booked seats as red
+  //   // BUT: Don't refresh if booking modal is open (to prevent interference)
+  //   const interval = setInterval(() => {
+  //     // Only refresh if modal is NOT open
+  //     if (!showBookingModal) {
+  //       loadSeats(false); // Refresh without showing loading state
+  //     }
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, [showBookingModal]);
+  //   return () => clearInterval(interval);
+  // }, [showBookingModal]);
 
-  const loadSeats = async (isInitial = false) => {
+  // const loadSeats = async (isInitial = false) => {
+    const loadSeats = useCallback( async (isInitial = false) => {
     try {
       if (isInitial) {
         setLoading(true); // Show loading only on initial load
@@ -82,11 +83,22 @@ const SeatGrid = () => {
         // setIsRefreshing(false);
       }
     }
-  };
+  }, []);
+
+  // useEffect(() => {
+  //   applyFilters();
+  // }, [seats, filters]);
 
   useEffect(() => {
-    applyFilters();
-  }, [seats, filters]);
+    loadSeats(true);
+    const interval = setInterval(() => {
+      if (!showBookingModal) {
+        loadSeats(false);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [showBookingModal, loadSeats]);
 
   // const applyFilters = () => {
   const applyFilters = useCallback( () => {
@@ -140,7 +152,7 @@ const SeatGrid = () => {
   }, [lockedSeats]);
 
   /*
-  
+
   const getSeatIcon = (seatType) => {
     switch (seatType) {
       case 'MEETING_ROOM':

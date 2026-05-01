@@ -9,9 +9,12 @@ import CountdownTimer from './CountdownTimer';
 const adjustColorBrightness = (color, percent) => {
   const num = parseInt(color.replace("#", ""), 16);
   const amt = Math.round(2.55 * percent);
-  const R = Math.max(0, (num >> 16) + amt);
-  const G = Math.max(0, (num >> 8 & 0x00FF) + amt);
-  const B = Math.max(0, (num & 0x0000FF) + amt);
+  // const R = Math.max(0, (num >> 16) + amt);
+  // const G = Math.max(0, (num >> 8 & 0x00FF) + amt);
+  // const B = Math.max(0, (num & 0x0000FF) + amt);
+  const R = Math.max(0, ((num >> 16) & 0xFF) + amt);
+  const G = Math.max(0, ((num >> 8) & 0xFF) + amt);
+  const B = Math.max(0, (num & 0xFF) + amt);
   return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
     (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
     (B < 255 ? B < 1 ? 0 : B : 255))
@@ -22,7 +25,7 @@ const SeatGrid = () => {
   const [seats, setSeats] = useState([]);
   const [filteredSeats, setFilteredSeats] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [lockedSeats, setLockedSeats] = useState(new Set());
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -33,7 +36,8 @@ const SeatGrid = () => {
     status: '' // Empty string means show ALL statuses (AVAILABLE, BOOKED, LOCKED, MAINTENANCE)
   });
 
-  const { user, isEmployee } = useAuth();
+  // const { user, isEmployee } = useAuth();
+  const { isEmployee } = useAuth();
 
   useEffect(() => {
     loadSeats(true); // Initial load
@@ -56,7 +60,7 @@ const SeatGrid = () => {
       if (isInitial) {
         setLoading(true); // Show loading only on initial load
       } else {
-        setIsRefreshing(true); // Silent refresh for auto-updates
+        // setIsRefreshing(true); // Silent refresh for auto-updates
       }
       const response = await seatsAPI.getAllSeats();
 
@@ -75,7 +79,7 @@ const SeatGrid = () => {
       if (isInitial) {
         setLoading(false);
       } else {
-        setIsRefreshing(false);
+        // setIsRefreshing(false);
       }
     }
   };
@@ -84,7 +88,8 @@ const SeatGrid = () => {
     applyFilters();
   }, [seats, filters]);
 
-  const applyFilters = () => {
+  // const applyFilters = () => {
+  const applyFilters = useCallback( () => {
     let filtered = seats;
 
     if (filters.floor) {
@@ -100,7 +105,11 @@ const SeatGrid = () => {
     }
 
     setFilteredSeats(filtered);
-  };
+  }, [seats, filters]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -130,6 +139,8 @@ const SeatGrid = () => {
     }
   }, [lockedSeats]);
 
+  /*
+  
   const getSeatIcon = (seatType) => {
     switch (seatType) {
       case 'MEETING_ROOM':
@@ -140,6 +151,8 @@ const SeatGrid = () => {
         return '💺';
     }
   };
+
+ */
 
   const canBookSeat = (seat) => {
     if (seat.status !== 'AVAILABLE') return false;

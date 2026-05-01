@@ -30,7 +30,7 @@ const MyBookings = () => {
   };
 
   // Group bookings by meeting group ID (meetings or admin bookings) or individual bookings
-  const groupBookings = (bookingsList) => {
+  /* const groupBookings = (bookingsList) => {
     const grouped = {};
     const individual = [];
 
@@ -81,7 +81,8 @@ const MyBookings = () => {
     });
 
     return { grouped, individual };
-  };
+  }; 
+  */
 
   const handleCancelBooking = async (bookingId, seatNumber, startTime) => {
     const startDateTime = new Date(startTime).toLocaleString();
@@ -116,6 +117,7 @@ const MyBookings = () => {
     });
   };
 
+  /* 
   const getStatusColor = (status) => {
     switch (status) {
       case 'CONFIRMED': return '#28a745';
@@ -149,6 +151,7 @@ const MyBookings = () => {
   const isBookingPast = (booking) => {
     return new Date(booking.endTime) < new Date();
   };
+  */
 
   const getStatusLabel = (booking) => {
     const now = new Date();

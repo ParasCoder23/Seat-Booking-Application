@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import { toast } from 'react-toastify';
 import { bookingsAPI } from '../services/api';
 
@@ -134,20 +134,22 @@ const MyBookings = () => {
       case 'COMPLETED': return '✔️';
       default: return '📅';
     }
-  };
+  }; 
+  */
 
-  const isBookingCancellable = (booking) => {
+  const isBookingCancellable = useCallback((booking) => {
     if (booking.status !== 'CONFIRMED') return false;
     return new Date(booking.startTime) > new Date();
-  };
+  }, []);
 
-  const isBookingActive = (booking) => {
+  const isBookingActive = useCallback((booking) => {
     const now = new Date();
     const start = new Date(booking.startTime);
     const end = new Date(booking.endTime);
     return booking.status === 'CONFIRMED' && start <= now && end >= now;
-  };
+  }, []);
 
+  /* 
   const isBookingPast = (booking) => {
     return new Date(booking.endTime) < new Date();
   };

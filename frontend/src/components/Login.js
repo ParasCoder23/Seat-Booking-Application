@@ -61,14 +61,14 @@ const Login = () => {
     }
   };
 
-  const fillDemoCredentials = (role) => {
-    const credentials = {
-      'admin': { username: 'admin', password: 'admin123' },
-      'manager': { username: 'manager', password: 'manager123' },
-      'employee': { username: 'employee', password: 'employee123' }
-    };
-    setFormData(credentials[role]);
-  };
+  // const fillDemoCredentials = (role) => {
+  //   const credentials = {
+  //     'admin': { username: 'admin', password: 'admin123' },
+  //     'manager': { username: 'manager', password: 'manager123' },
+  //     'employee': { username: 'employee', password: 'employee123' }
+  //   };
+  //   setFormData(credentials[role]);
+  // };
 
   return (
     <div style={{
@@ -120,7 +120,8 @@ const Login = () => {
           </button>
         </form>
 
-        <div style={{ marginBottom: '20px' }}>
+        {/* Demo Accounts */}
+        {/* <div style={{ marginBottom: '20px' }}>
           <p style={{ textAlign: 'center', marginBottom: '10px', color: '#666', fontSize: '0.9rem' }}>
             Demo Accounts:
           </p>
@@ -150,7 +151,7 @@ const Login = () => {
               Employee
             </button>
           </div>
-        </div>
+        </div> */}
 
         <div className="text-center">
           <p style={{ color: '#666' }}>

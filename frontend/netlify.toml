@@ -11,7 +11,7 @@
   # Tell React to generate production build
   NODE_ENV = "production"
   # Your backend API URL (update after deploying backend)
-  REACT_APP_API_URL = "https://your-backend.onrender.com"
+  # REACT_APP_API_URL = "https://your-backend.onrender.com"
 
 # Redirect all routes to index.html for React Router
 [[redirects]]

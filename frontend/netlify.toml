@@ -1,0 +1,29 @@
+# Netlify Configuration for Frontend
+# Location: /frontend/netlify.toml
+
+[build]
+  # Build command
+  command = "npm run build"
+  # Output directory
+  publish = "build"
+
+[build.environment]
+  # Tell React to generate production build
+  NODE_ENV = "production"
+  # Your backend API URL (update after deploying backend)
+  REACT_APP_API_URL = "https://your-backend.onrender.com"
+
+# Redirect all routes to index.html for React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+
